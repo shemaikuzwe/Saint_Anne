@@ -30,7 +30,7 @@ include '../conn.php';
                     <li class=" nav-item"><a href="Products.php" class="nav-link text-black"> Products</a></li>
                     <li class="nav-item"><a href="stock_in.php" class="nav-link text-black" >Stock In</a></li>
                     <li class="nav-item"><a href="stock_out.php" class="nav-link text-black"> Stock out</a></li>
-                    <li class="nav-item"><a href="report.php" class="nav-link text-black"> Report</a></li>
+                 
                     <div class="nav-brand">
                         <img src="../images/user.png" alt="avatar"  class="rounded-pill" style="width: 100px;" >
                     </div>
