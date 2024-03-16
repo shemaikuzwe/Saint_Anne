@@ -92,12 +92,23 @@ include '../conn.php';
                    </tbody> 
                 </table>
             </div>
-        <center><a href="add_stock_in.php" class="btn btn-warning btn-sm"><i class="fa-solid fa-plus"></i>New</a></center>
+        <center><a href="add_stock_in.php" class="btn btn-warning btn-sm"><i class="fa-solid fa-plus"></i>New</a>
+        <button class="btn btn-dark btn-sm" onclick="download()"><i class="fa-solid fa-download"></i>Download</button>
+      </center>
     </div>
   </div>
             
         </div>
       </div>  
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <script>
+function downloadPDF() {
+    const element = document.getElementById('content');
+    html2pdf()
+        .from(element)
+        .save();
+}
+</script>
 </body>
 </html>

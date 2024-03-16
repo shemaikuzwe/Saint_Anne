@@ -15,6 +15,7 @@ include '../conn.php';
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="style.css">
+   
     <title>Products</title>
 </head>
 <body>
@@ -47,7 +48,7 @@ include '../conn.php';
     <div class="card-header">
       <center > <i class="fa-solid  fa-clock-rotate-left"></i> Our Prdoucts</center> 
     </div>
-    <div class="card-body">
+    <div class="card-body" id="content">
       <div class="table table-resplonsive table-sm w-80">
                 <table class="table border table-stripped table-hover">
                    <thead class="table-dark text-white">
@@ -90,12 +91,22 @@ include '../conn.php';
                    </tbody> 
                 </table>
             </div>
-        <center><a href="add_products.php" class="btn btn-warning btn-sm"><i class="fa-solid fa-plus"></i>New</a> <a href="add_products.php" class="btn btn-warning btn-sm"><i class="fa-solid fa-plus"></i>Download</a> </center>
+        <center><a href="add_products.php" class="btn btn-warning btn-sm"><i class="fa-solid fa-plus"></i>New</a> 
+        <button class="btn btn-dark btn-sm" onclick="download()"><i class="fa-solid fa-download"></i>Download</button> </center>
     </div>
   </div>
             
         </div>
       </div>  
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+    <script>
+        function download() {
+            const element = document.getElementById('content');
+            html2pdf()
+                .from(element)
+                .save();
+        }
+        </script>
 </body>
 </html>
