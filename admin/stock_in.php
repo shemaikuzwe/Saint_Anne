@@ -62,11 +62,11 @@ include '../conn.php';
                 $select=$conn->query("SELECT * FROM stockin");
                  if (mysqli_num_rows($select)>0){
                     while ($row=mysqli_fetch_assoc($select)) {
-                        $s_id=$row['StockInId'];
+                        $s_id=$row['stockInId'];
                         $p_id=$row['ProductId'];
                         $quantity=$row['quantity'];
                         $date=$row['date'];
-                        $select_product=$conn->query("SELECT * FROM product WHERE ProductId=$p_id");
+                        $select_product=$conn->query("SELECT * FROM product WHERE ProductId='$p_id'");
                         foreach($select_product as $row_product){
                           $Pname=$row_product["ProductName"];
                           $Pprice=$row_product["PricePerKg"];

@@ -7,17 +7,17 @@ include '../conn.php';
  if (isset($_POST['submit'])) {
     $pid=$_POST['pid'];
     $quantity=$_POST['quantity'];
-    $price=$conn->query("SELECT price FROM products WHERE product_id='$pid'");
+    $price=$conn->query("SELECT PricePerKg FROM products WHERE ProductId='$pid'");
     $row=mysqli_fetch_assoc($price);
-    $unit_price=$row['price'];
+    $unit_price=$row['PricePerKg'];
     $amount=$quantity*$unit_price;
-    $update=$conn->query("UPDATE products SET total_price=total_price+'$amount',quantity=quantity+'$quantity' WHERE product_id='$pid'");
-    $insert=$conn->query("INSERT INTO stock_in(product_id,quantity,amount) VALUES('$pid','$quantity','$amount')");
+    $update=$conn->query("UPDATE products SET Total_price=Total_price+'$amount',quantity=quantity+'$quantity' WHERE ProductId='$pid'");
+    $insert=$conn->query("INSERT INTO stockin(ProductId,quantity) VALUES('$pid','$quantity')");
     if ($update AND $insert) {
         header("location:stock_in.php");
     }
     else{
-        header("location:add_stockin.php?error=product not added in stock");
+        header("location:add_stock_in.php?error=product not added in stock");
     }
     
 }
@@ -43,10 +43,10 @@ include '../conn.php';
                         <h5><b>Saint Anne Management System</b></h5>
                     </div>
                     <li class="nav-item"><a href="index.php" class="nav-link text-black"> Dashboard</a></li>
-                    <li class=" nav-item"><a href="furniture.php" class="nav-link text-black"> Products</a></li>
-                    <li class="nav-item"><a href="import.php" class="nav-link text-black" >Stock In</a></li>
-                    <li class="nav-item"><a href="export.php" class="nav-link text-black"> Stock out</a></li>
-                    <li class="nav-item"><a href="export.php" class="nav-link text-black"> Report</a></li>
+                    <li class=" nav-item"><a href="Products.php" class="nav-link text-black"> Products</a></li>
+                    <li class="nav-item"><a href="stock_in.php" class="nav-link text-black" >Stock In</a></li>
+                    <li class="nav-item"><a href="stock_out.php" class="nav-link text-black"> Stock out</a></li>
+                    <li class="nav-item"><a href="report.php" class="nav-link text-black"> Report</a></li>
                     <div class="nav-brand">
                         <img src="../images/user.png" alt="avatar"  class="rounded-pill" style="width: 100px;" >
                     </div>
@@ -66,7 +66,7 @@ include '../conn.php';
     <div class="card-body">
     <form method="post" class="border rounded shadow p-4 mt-3">
           <?php
-                    if(isset($_GET['error'])){
+            if(isset($_GET['error'])){
                        $error=$_GET['error'];
                        echo'<div class="alert alert-danger alert-dismissible">
                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>'.
