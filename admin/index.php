@@ -14,6 +14,7 @@ include '../conn.php';
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
     <title>Dashboard</title>
 </head>
 <body>
@@ -43,9 +44,29 @@ include '../conn.php';
       <div class="col-sm-9 ">
     <button class="btn m-1"><i class="fa-solid fa-bars " style="font-size:30px"></i></button> 
         <div class="row m-3 p-4">
-            <div class="col sm-3 border rounded p-5 me-2 bg-primary text-white"><i class="fa-solid fa-shopping-cart  p-2" style="font-size:80px"></i> <br> Products<br><b class="p-4 ">12 </b> <br><a href="#" class=" text-white"><i class="fa-solid fa-arrow-right"></i> View all</a></div>
-            <div class="col sm-3 border rounded p-5 me-2 bg-success text-white"><i class="fa-solid fa-cart-plus p-2" style="font-size:80px"></i> <br>This week stock in <br><b class="p-4 ">12 </b> <br><a href="#" class="text-white"><i class="fa-solid fa-arrow-right"></i> View all</a></div>
-            <div class="col sm-3 border rounded p-5 bg-info text-white"><i class="fa-solid fa-cart-arrow-down p-2" style="font-size:80px"></i> <br>this week stock out <br> <b class="p-4 ">12 </b> <br><center></center> <a href="#" class="text-white"> <i class="fa-solid fa-arrow-right "></i> View all</a></div>
+            <div class="col sm-3 border rounded p-5 me-2 bg-primary text-white"><i class="fa-solid fa-shopping-cart  p-2" style="font-size:80px"></i> <br> Products<br><b class="p-4 "><?php
+            $select_p=$conn->query("SELECT count(*) as no_products FROM products");
+            foreach ($select_p as $no_products) {
+             echo $no_products['no_products'];
+            }
+            ?> </b> <br><a href="#" class=" text-white"><i class="fa-solid fa-arrow-right"></i> View all</a></div>
+            <div class="col sm-3 border rounded p-5 me-2 bg-success text-white"><i class="fa-solid fa-cart-plus p-2" style="font-size:80px"></i> <br>Last stock in <br><b class="p-4 "> 
+
+            <?php
+            $select_s=$conn->query("SELECT count(*) as no_stock_in FROM stockin LIMIT 5");
+            foreach ($select_s as $no_stock_in) {
+             echo $no_stock_in['no_stock_in'];
+            }
+            ?>
+            </b> <br><a href="#" class="text-white"><i class="fa-solid fa-arrow-right"></i> View all</a></div>
+            <div class="col sm-3 border rounded p-5 bg-info text-white"><i class="fa-solid fa-cart-arrow-down p-2" style="font-size:80px"></i> <br>last stock out <br> <b class="p-4 ">
+            <?php
+            $select_o=$conn->query("SELECT count(*) as no_stock_out FROM stockout LIMIT 5");
+            foreach ($select_o as $no_stock_out) {
+             echo $no_stock_out['no_stock_out'];
+            }
+            ?>        
+        </b> <br><center></center> <a href="#" class="text-white"> <i class="fa-solid fa-arrow-right "></i> View all</a></div>
         </div>
 
         <div class="row m-4">

@@ -15,7 +15,7 @@ include '../conn.php';
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="style.css">
-    <title>Products</title>
+    <title>Stock Out</title>
 </head>
 <body>
     <div class="container-fluid content  d-flex  mt-2">
@@ -45,44 +45,46 @@ include '../conn.php';
     <button class="btn m-1"><i class="fa-solid fa-bars " style="font-size:30px"></i></button> 
      <div class="card ">
     <div class="card-header">
-      <center > <i class="fa-solid  fa-clock-rotate-left"></i> Our Prdoucts</center> 
+      <center > <i class="fa-solid  fa-clock-rotate-left"></i> Stock Out</center> 
     </div>
     <div class="card-body">
       <div class="table table-resplonsive table-sm w-80">
                 <table class="table border table-stripped table-hover">
                    <thead class="table-dark text-white">
-                    <th>Product Id </th>
+                    <th>Stock out Id </th>
                     <th>Product Name</th>
                     <th>Quantity</th>
                     <th>Price per Kg</th>
                     <th>Total price</th>
-                    <th>Edit</th>
-                    <th>Remove</th>
+                    <th>Date</th>
                    </thead> 
                    <tbody>
                 <?php 
-                $select=$conn->query("SELECT * FROM products");
+                $select=$conn->query("SELECT * FROM stockout");
                  if (mysqli_num_rows($select)>0){
                     while ($row=mysqli_fetch_assoc($select)) {
+                        $s_id=$row['StockOutId'];
                         $p_id=$row['ProductId'];
-                        $Pname=$row['ProductName'];
-                        $price=$row['PricePerKg'];
-                        $total=$row['Total_price'];
                         $quantity=$row['quantity'];
+                        $date=$row['date'];
+                        $select_product=$conn->query("SELECT * FROM products WHERE ProductId='$p_id'");
+                        foreach($select_product as $row_product){
+                          $Pname=$row_product["ProductName"];
+                          $Pprice=$row_product["PricePerKg"];
+                        }
+                        $total=$quantity*$Pprice;
                         echo " <tr>
                         <td>$p_id</td>
                         <td>$Pname</td>
                         <td>$quantity Kg</td>
-                        <td>$price Rwf</td>
+                        <td>$Pprice Rwf</td>
                         <td>$total Rwf</td>
-                        <td><a href='edit_product.php?p_id=$p_id' class='btn btn-success'>Edit</a></td>
-                        <td><a href='delete_product.php?p_id=$p_id' class='btn btn-danger'>Remove</a></td>
-                    
+                        <td>$date</td>
                     </tr>";
                     } 
                  }
                  else {
-                    echo "<td colspan='3'><center> No products Found</center></td>";
+                    echo "<td colspan='3'><center> No stock out found</center></td>";
                  }
 
                 ?>
@@ -90,7 +92,7 @@ include '../conn.php';
                    </tbody> 
                 </table>
             </div>
-        <center><a href="add_products.php" class="btn btn-warning btn-sm"><i class="fa-solid fa-plus"></i>New</a> <a href="add_products.php" class="btn btn-warning btn-sm"><i class="fa-solid fa-plus"></i>Download</a> </center>
+        <center><a href="add_stock_out.php" class="btn btn-warning btn-sm"><i class="fa-solid fa-plus"></i>New</a></center>
     </div>
   </div>
             

@@ -4,6 +4,23 @@ include '../conn.php';
  if (!isset($_SESSION['user'])) {
     header("location:../index.php");
  }
+ if (isset($_POST['submit'])) {
+    $pid=$_POST['pid'];
+    $quantity=$_POST['quantity'];
+    $price=$conn->query("SELECT PricePerKg FROM products WHERE ProductId='$pid'");
+    $row=mysqli_fetch_assoc($price);
+    $unit_price=$row['PricePerKg'];
+    $amount=$quantity*$unit_price;
+    $update=$conn->query("UPDATE products SET Total_price=Total_price-'$amount',quantity=quantity+'$quantity' WHERE ProductId='$pid'");
+    $insert=$conn->query("INSERT INTO stockout(ProductId,quantity) VALUES('$pid','$quantity')");
+    if ($update AND $insert) {
+        header("location:stock_out.php");
+    }
+    else{
+        header("location:add_stock_in.php?error=product not added in stock");
+    }
+    
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +32,7 @@ include '../conn.php';
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="style.css">
-    <title>Products</title>
+    <title>Add stock Out</title>
 </head>
 <body>
     <div class="container-fluid content  d-flex  mt-2">
@@ -48,49 +65,35 @@ include '../conn.php';
       <center > <i class="fa-solid  fa-clock-rotate-left"></i> Our Prdoucts</center> 
     </div>
     <div class="card-body">
-      <div class="table table-resplonsive table-sm w-80">
-                <table class="table border table-stripped table-hover">
-                   <thead class="table-dark text-white">
-                    <th>Product Id </th>
-                    <th>Product Name</th>
-                    <th>Quantity</th>
-                    <th>Price per Kg</th>
-                    <th>Total price</th>
-                    <th>Edit</th>
-                    <th>Remove</th>
-                   </thead> 
-                   <tbody>
-                <?php 
-                $select=$conn->query("SELECT * FROM products");
-                 if (mysqli_num_rows($select)>0){
-                    while ($row=mysqli_fetch_assoc($select)) {
-                        $p_id=$row['ProductId'];
-                        $Pname=$row['ProductName'];
-                        $price=$row['PricePerKg'];
-                        $total=$row['Total_price'];
-                        $quantity=$row['quantity'];
-                        echo " <tr>
-                        <td>$p_id</td>
-                        <td>$Pname</td>
-                        <td>$quantity Kg</td>
-                        <td>$price Rwf</td>
-                        <td>$total Rwf</td>
-                        <td><a href='edit_product.php?p_id=$p_id' class='btn btn-success'>Edit</a></td>
-                        <td><a href='delete_product.php?p_id=$p_id' class='btn btn-danger'>Remove</a></td>
-                    
-                    </tr>";
-                    } 
-                 }
-                 else {
-                    echo "<td colspan='3'><center> No products Found</center></td>";
-                 }
-
-                ?>
-                   
-                   </tbody> 
-                </table>
-            </div>
-        <center><a href="add_products.php" class="btn btn-warning btn-sm"><i class="fa-solid fa-plus"></i>New</a> <a href="add_products.php" class="btn btn-warning btn-sm"><i class="fa-solid fa-plus"></i>Download</a> </center>
+    <form method="post" class="border rounded shadow p-4 mt-3">
+          <?php
+            if(isset($_GET['error'])){
+                       $error=$_GET['error'];
+                       echo'<div class="alert alert-danger alert-dismissible">
+                       <button type="button" class="btn-close" data-bs-dismiss="alert"></button>'.
+                       $error.'
+                     </div>';
+                    }
+                    ?>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text"><i class="fa-solid fa-cart-shopping"></i>&nbsp;Product name</span>
+                        <select class='form-select' name="pid">
+                             <?php
+                                $product_name=$conn->query("SELECT ProductId,ProductName FROM products");
+                                foreach ($product_name as  $product) {
+                                    $id=$product['ProductId'];
+                                    $name=$product['ProductName'];
+                                    echo " <option value='$id'>$name</option>";
+                                }
+                             ?>
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <span class="input-group-text"><i class="fa-solid fa-money-bill"></i>&nbsp; Quantity</span>
+                        <input type="number" placeholder="Enter Quantity in kg" name="quantity" class="form-control">
+                    </div>
+                    <center><button type="submit" name="submit" class="btn btn-warning"><i class="fa-solid fa-plus"></i>Add</button></center>
+                </form>
     </div>
   </div>
             

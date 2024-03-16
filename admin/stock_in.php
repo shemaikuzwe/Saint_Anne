@@ -14,6 +14,7 @@ include '../conn.php';
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
     <title>Dashboard</title>
 </head>
 <body>
@@ -26,10 +27,10 @@ include '../conn.php';
                         <h5><b>Saint Anne Management System</b></h5>
                     </div>
                     <li class="nav-item"><a href="index.php" class="nav-link text-black"> Dashboard</a></li>
-                    <li class=" nav-item"><a href="furniture.php" class="nav-link text-black"> Products</a></li>
-                    <li class="nav-item"><a href="import.php" class="nav-link text-black" >Stock In</a></li>
-                    <li class="nav-item"><a href="export.php" class="nav-link text-black"> Stock out</a></li>
-                    <li class="nav-item"><a href="export.php" class="nav-link text-black"> Report</a></li>
+                    <li class=" nav-item"><a href="Products.php" class="nav-link text-black"> Products</a></li>
+                    <li class="nav-item"><a href="stock_in.php" class="nav-link text-black" >Stock In</a></li>
+                    <li class="nav-item"><a href="stock_out.php" class="nav-link text-black"> Stock out</a></li>
+                    <li class="nav-item"><a href="report.php" class="nav-link text-black"> Report</a></li>
                     <div class="nav-brand">
                         <img src="../images/user.png" alt="avatar"  class="rounded-pill" style="width: 100px;" >
                     </div>
@@ -66,7 +67,7 @@ include '../conn.php';
                         $p_id=$row['ProductId'];
                         $quantity=$row['quantity'];
                         $date=$row['date'];
-                        $select_product=$conn->query("SELECT * FROM product WHERE ProductId='$p_id'");
+                        $select_product=$conn->query("SELECT * FROM products WHERE ProductId='$p_id'");
                         foreach($select_product as $row_product){
                           $Pname=$row_product["ProductName"];
                           $Pprice=$row_product["PricePerKg"];
@@ -77,7 +78,8 @@ include '../conn.php';
                         <td>$Pname</td>
                         <td>$quantity Kg</td>
                         <td>$Pprice Rwf</td>
-                        <td>$total</td>
+                        <td>$total Rwf</td>
+                        <td>$date</td>
                     </tr>";
                     } 
                  }
